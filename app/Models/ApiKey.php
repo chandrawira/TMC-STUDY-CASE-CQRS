@@ -11,4 +11,11 @@ class ApiKey extends Model
 
     public $timestamps = true;
     
+    public static function getApiKey($key)
+    {
+        return self::where([
+            'key'    => $key,
+            'active' => 1
+        ])->first();
+    }
 }
