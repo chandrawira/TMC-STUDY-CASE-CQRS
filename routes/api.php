@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\CategoryController;
 
 /*
@@ -21,3 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/categories',[CategoryController::class,'Store'])->name('api.category.store')->middleware('apikey');
 Route::get('/categories/find',[CategoryController::class,'Find'])->name('api.category.find')->middleware('apikey');
+
+//product
+Route::post('/product',[ProductController::class,'Store'])->name('api.product.store')->middleware('apikey');
+
