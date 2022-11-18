@@ -3,16 +3,17 @@
 namespace App\Http\Controllers\Api;
 
 use Carbon\Carbon;
+use App\CommandBus;
 use App\Models\Product;
 use App\Rules\Uppercase;
 use Illuminate\Http\Request;
+use App\Queries\ProductQuery;
 use App\Rules\ValidateInteger;
 use App\Http\Response\ApiResponse;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
 
-use App\CommandBus;
+use App\Http\Controllers\Controller;
 use App\Commands\CreateProductCommand;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -23,6 +24,13 @@ class ProductController extends Controller
     {
         $this->commandBus = $commandBus;
     }
+
+    public function details(int $id)
+    {
+        $query = new ProductQuery($id);
+        return $query->getData();
+    }
+
 
     //
     public function Store(Request $request){
