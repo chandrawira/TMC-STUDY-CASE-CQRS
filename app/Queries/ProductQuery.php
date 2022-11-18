@@ -6,16 +6,34 @@ use App\Models\Product;
 
 class ProductQuery
 {
-    private $productId;
+    private $keyword;
 
-    public function __construct(int $productId)
-    {
-        $this->productId = $productId;
+    public function __construct($keyword)
+    {   
+       $this->keyword = $keyword;
     }
 
-    public function getData(): array
+    public function getDataProductBySKU(): array
     {
-        $product = Product::query()->findOrFail($this->productId);
+        $keyword = collect($this->keyword)->collapse();
+        $product = Product::WhereIn('sku',$keyword)->get();
         return ['data'=>$product];
+    }
+
+    public function getDataProductByPrice(): array
+    {
+        $keyword = $this->keyword;
+        $priceStart = $keyword['price.start'][0];
+        $priceEnd   = $keyword['price.end'][0];
+
+        $product = Product::where('price','>=',$priceStart)
+                    ->where('price','<=',$priceEnd)
+                   ->paginate(5);
+        if(!$product->isEmpty()){
+            return ['data'=>$product];
+        }else{
+            return ['data' => null];
+        }
+        
     }
 }

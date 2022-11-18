@@ -26,10 +26,60 @@ class ProductController extends Controller
         $this->commandBus = $commandBus;
     }
 
-    public function details(int $id)
+    public function Query(Request $request)
     {
-        $query = new ProductQuery($id);
-        return $query->getData();
+        $response = ApiResponse::getInstance();
+        $validator = Validator::make($request->all(), [
+            'sku' => ['nullable','size:15','string','exists:products,sku',new Uppercase], //OT-855-46-44789
+            'name' => ['nullable','min:5','max:200','string','exists:products,name', new Uppercase],
+            'category.id' => ['nullable','min:2','max:200','string','exists:categories,id'],
+            'price.start' => ['nullable','min:0','integer',new ValidateInteger, 'lte:price.end'],
+            'price.end' => ['nullable','min:0','integer',new ValidateInteger,'gte:price.start'],
+
+        ]);
+
+        if ($validator->fails()) {
+            return $response->message($validator->getMessageBag())->badRequest();
+        }
+
+
+        try {
+            $query  = explode('&', $_SERVER['QUERY_STRING']);
+            $params = array();
+            
+            foreach( $query as $param )
+            {
+            if (strpos($param, '=') === false) $param += '=';
+            
+            list($name, $value) = explode('=', $param, 2);
+            $params[urldecode($name)][] = urldecode($value);
+            }
+            
+            $keyword = $params;
+            $query = new ProductQuery($keyword);
+            
+            if(!empty($keyword['sku'])){$result = $query->getDataProductBySKU();} //BySKU
+
+            if((!empty($keyword['price.start'])) && !empty($keyword['price.end']) ){
+                $result = $query->getDataProductByPrice();
+                
+            }//ByPrice
+            
+            if(empty($result['data'])){
+                return $response->notFound('Not Found');
+            }else{
+                 return $response->success($result);
+            }
+
+           
+
+        } catch (\Throwable $th) {
+            $ErrMsg = $th->getMessage();
+            return $response->serverError($ErrMsg);
+        }
+
+
+        
     }
 
 

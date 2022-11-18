@@ -26,3 +26,5 @@ Route::get('/categories/find',[CategoryController::class,'Find'])->name('api.cat
 //product
 Route::post('/product',[ProductController::class,'Store'])->name('api.product.store')->middleware('apikey');
 
+
+Route::get('/search',[ProductController::class,'Query'])->name('api.product.query')->middleware('apikey');
