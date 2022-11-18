@@ -3,6 +3,7 @@
 namespace App\Commands;
 
 use App\Models\Product;
+use Illuminate\Support\Facades\DB;
 
 class CreateProductHandler
 {
@@ -14,6 +15,7 @@ class CreateProductHandler
 
     public function Store($command)
     {
+		DB::beginTransaction();
 		try {
 
 			$product = new Product();
@@ -25,13 +27,14 @@ class CreateProductHandler
 			$product->category_id = $command->getCategoryId();
 			$product->createdAt = $command->getcreatedAt();
 			$product->save();
-
-			//return $product->toArray();
 			
+			DB::commit();
 			//other queue
+			
+			//SentTo MessageBroker
 
 		} catch (\Throwable $th) {
-			//throw $th;
+			DB::rollBack();
 			return $th;
 		}	
 			

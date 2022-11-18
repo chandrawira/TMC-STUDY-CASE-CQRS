@@ -7,25 +7,30 @@ use Illuminate\Support\Facades\DB;
 
 class CreateCategoryHandler
 {
-    public function __invoke(CreateProductCommand $command)
+    public function __invoke(CreateCategoryCommand $command)
     {
+		return $this->Store($command);
+    }
+
+	public function Store($command){
 		DB::beginTransaction();
 
 		try {
-			DB::commit();
+			
 			$Category = new Category();
+			$Category->id = $command->getId();
 			$Category->name = $command->getName();
 			$Category->createdAt = $command->getcreatedAt();
-			return $Category->save();
+			$Category->save();
+			DB::commit();
+			//queue notification, dispatch event etc.
+			
 
 		} catch (\Throwable $th) {
-			//throw new \ErrorException('Error found');
 			DB::rollBack();
 
 			return $th;
 		}
     	
-
-    	// other logic, eg queue slack notification, dispatch event etc.
-    }
+	}
 }

@@ -3,16 +3,25 @@
 namespace App\Http\Controllers\Api;
 
 use Carbon\Carbon;
+use App\CommandBus;
 use App\Models\Category;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Response\ApiResponse;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Commands\CreateCategoryCommand;
 use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
 
+    private $commandBus;
+
+    public function __construct(CommandBus $commandBus)
+    {
+        $this->commandBus = $commandBus;
+    }
+    
     public function Store(Request $request){
         $response = ApiResponse::getInstance();
         $validator = Validator::make($request->all(), [
@@ -22,21 +31,21 @@ class CategoryController extends Controller
         if ($validator->fails()) {
             return $response->message($validator->getMessageBag())->badRequest();
         }
-        DB::beginTransaction();
 
         try {
 
-            $category = new Category;
-            $category->name = $request->name;
-            $category->createdAt = Carbon::now()->timestamp;
-            $category->save();
-            DB::commit();
-            return $response->success($category);
+            $id = Str::uuid()->toString();
+            $createdAt = Carbon::now()->timestamp;
+            $CreateCategory = new CreateCategoryCommand($id ,$request->name, $createdAt);
+            $this->commandBus->handle($CreateCategory);
+
+            return $response->success($CreateCategory->getResult());
+        
         
         } catch (\Throwable $th) {
-            DB::rollBack();
+
             $ErrMsg = $th->getMessage();
-            return $response->notFound('message');
+            return $response->notFound($ErrMsg);
         }
     }
     

@@ -48,6 +48,8 @@ class ProductController extends Controller
             return $response->message($validator->getMessageBag())->badRequest();
         }
 
+        
+
         try {
 
             $id = Str::uuid()->toString();
