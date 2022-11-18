@@ -17,6 +17,7 @@ class CreateProductHandler
 		try {
 
 			$product = new Product();
+			$product->id = $command->getId();
 			$product->sku = $command->getSku();
 			$product->name = $command->getName();
 			$product->price = $command->getPrice();
@@ -24,7 +25,10 @@ class CreateProductHandler
 			$product->category_id = $command->getCategoryId();
 			$product->createdAt = $command->getcreatedAt();
 			$product->save();
-						
+
+			//return $product->toArray();
+			
+			//other queue
 
 		} catch (\Throwable $th) {
 			//throw $th;

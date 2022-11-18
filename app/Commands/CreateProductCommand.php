@@ -4,10 +4,11 @@ namespace App\Commands;
 
 class CreateProductCommand
 {
-    private $sku, $name, $price, $stock, $categoryId, $createdAt;
+    private $id, $sku, $name, $price, $stock, $categoryId, $createdAt;
     
-    public function __construct($sku, $name, $price, $stock, $categoryId, $createdAt)
+    public function __construct($id, $sku, $name, $price, $stock, $categoryId, $createdAt)
     {   
+        $this->id = $id;
         $this->sku = $sku;
         $this->name = $name;
         $this->price = $price;
@@ -51,6 +52,21 @@ class CreateProductCommand
     public function getcreatedAt(): string
     {
         return $this->createdAt;
+    }
+
+    public function getResult(): array
+    {   
+        return ['data',
+                    [
+                        'id'=> $this->id,
+                        'sku'=> $this->sku,
+                        'name'=> $this->name,
+                        'price'=> $this->price,
+                        'stock' => $this->stock,
+                        'categoryId' => $this->categoryId,
+                        'createdAt' => $this->createdAt
+                    ]
+        ];
     }
 
     

@@ -6,11 +6,12 @@ use Carbon\Carbon;
 use App\CommandBus;
 use App\Models\Product;
 use App\Rules\Uppercase;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Queries\ProductQuery;
 use App\Rules\ValidateInteger;
-use App\Http\Response\ApiResponse;
 
+use App\Http\Response\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Commands\CreateProductCommand;
 use Illuminate\Support\Facades\Validator;
@@ -49,11 +50,12 @@ class ProductController extends Controller
 
         try {
 
+            $id = Str::uuid()->toString();
             $createdAt = Carbon::now()->timestamp;
-            $CreateProduct = new CreateProductCommand($request->sku,$request->name, $request->price,$request->stock,$request->categoryId, $createdAt);
+            $CreateProduct = new CreateProductCommand($id , $request->sku,$request->name, $request->price,$request->stock,$request->categoryId, $createdAt);
             $this->commandBus->handle($CreateProduct);
-            
-            return $response->success("Sukses");
+
+            return $response->success($CreateProduct->getResult());
         
         } catch (\Throwable $th) {
 
