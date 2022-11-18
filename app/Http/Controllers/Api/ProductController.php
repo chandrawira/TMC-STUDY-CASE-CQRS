@@ -64,7 +64,14 @@ class ProductController extends Controller
                 $result = $query->getDataProductByPrice();
                 
             }//ByPrice
+
+            if((!empty($keyword['stock.start'])) && !empty($keyword['stock.end']) ){
+                $result = $query->getDataProductByStock();
+                
+            }//ByStock
             
+
+            //Result
             if(empty($result['data'])){
                 return $response->notFound('Not Found');
             }else{

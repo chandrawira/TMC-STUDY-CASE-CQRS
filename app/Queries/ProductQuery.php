@@ -36,4 +36,21 @@ class ProductQuery
         }
         
     }
+
+    public function getDataProductByStock(): array
+    {
+        $keyword = $this->keyword;
+        $priceStart = $keyword['stock.start'][0];
+        $priceEnd   = $keyword['stock.end'][0];
+
+        $product = Product::where('stock','>=',$priceStart)
+                    ->where('stock','<=',$priceEnd)
+                   ->paginate(5);
+        if(!$product->isEmpty()){
+            return ['data'=>$product];
+        }else{
+            return ['data' => null];
+        }
+        
+    }
 }
