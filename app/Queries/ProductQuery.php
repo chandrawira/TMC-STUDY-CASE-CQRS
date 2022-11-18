@@ -2,6 +2,7 @@
 
 namespace App\Queries;
 
+use App\Models\Category;
 use App\Models\Product;
 
 class ProductQuery
@@ -52,5 +53,27 @@ class ProductQuery
             return ['data' => null];
         }
         
+    }
+
+    public function getDataProductByCategoryId(): array
+    {
+        $keyword = collect($this->keyword)->collapse();
+        $product = Product::WhereIn('category_id',$keyword)->paginate(5);;
+        if(!$product->isEmpty()){
+            return ['data'=>$product];
+        }else{
+            return ['data' => null];
+        }
+    }
+
+    public function getDataProductByCategoryName(): array
+    {
+        $keyword = collect($this->keyword)->collapse();
+        $category = Category::WhereIn('name',$keyword)->paginate(5);;
+        if(!$category->isEmpty()){
+            return ['data'=>$category];
+        }else{
+            return ['data' => null];
+        }
     }
 }

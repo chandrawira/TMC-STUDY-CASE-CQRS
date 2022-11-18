@@ -70,6 +70,9 @@ class ProductController extends Controller
                 
             }//ByStock
             
+            if(!empty($keyword['category.id'])){$result = $query->getDataProductByCategoryId();} //ByCategoryId
+            if(!empty($keyword['category.name'])){$result = $query->getDataProductByCategoryName();} //ByCategoryName
+
 
             //Result
             if(empty($result['data'])){

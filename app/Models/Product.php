@@ -14,4 +14,9 @@ class Product extends Model
     public $timestamps = false;
     public $incrementing = false;
 
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class,'foreign_key');
+    }
 }
