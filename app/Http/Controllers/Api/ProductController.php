@@ -8,12 +8,22 @@ use App\Rules\Uppercase;
 use Illuminate\Http\Request;
 use App\Rules\ValidateInteger;
 use App\Http\Response\ApiResponse;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
+use App\CommandBus;
+use App\Commands\CreateProductCommand;
+
 class ProductController extends Controller
 {
+
+    private $commandBus;
+
+    public function __construct(CommandBus $commandBus)
+    {
+        $this->commandBus = $commandBus;
+    }
+
     //
     public function Store(Request $request){
         $response = ApiResponse::getInstance();
@@ -28,23 +38,17 @@ class ProductController extends Controller
         if ($validator->fails()) {
             return $response->message($validator->getMessageBag())->badRequest();
         }
-        DB::beginTransaction();
 
         try {
 
-            $Product = new Product();
-            $Product->sku = $request->sku;
-            $Product->name = $request->name;
-            $Product->price = $request->price;
-            $Product->stock = $request->stock;
-            $Product->category_id = $request->categoryId;
-            $Product->createdAt = Carbon::now()->timestamp;
-            $Product->save();
-            DB::commit();
-            return $response->success($Product);
+            $createdAt = Carbon::now()->timestamp;
+            $CreateProduct = new CreateProductCommand($request->sku,$request->name, $request->price,$request->stock,$request->categoryId, $createdAt);
+            $this->commandBus->handle($CreateProduct);
+            
+            return $response->success($CreateProduct);
         
         } catch (\Throwable $th) {
-            DB::rollBack();
+
             $ErrMsg = $th->getMessage();
             return $response->serverError($ErrMsg);
         }
