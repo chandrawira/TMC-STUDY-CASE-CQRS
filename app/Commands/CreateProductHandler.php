@@ -19,7 +19,6 @@ class CreateProductHandler
 			$product->createdAt = $command->getcreatedAt();
 			$product->save();
 
-			return $product;
 			//send info
     	
     }

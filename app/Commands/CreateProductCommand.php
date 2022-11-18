@@ -45,4 +45,19 @@ class CreateProductCommand
     {
         return $this->createdAt;
     }
+
+    public function ReturnVal()
+    {
+       return array('data' => 
+                            array(
+                            'sku'=> $this->getSku(), 
+                            'name'=> $this->getName(),
+                            'price'=> $this->getPrice(),
+                            'stock'=> $this->getStock(),
+                            'categoryId'=> $this->getCategoryId(),
+                            'createdAt'=> $this->getcreatedAt() 
+                            )
+                        );
+            
+    }
 }
