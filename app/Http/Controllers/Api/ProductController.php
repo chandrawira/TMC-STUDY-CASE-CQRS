@@ -53,7 +53,7 @@ class ProductController extends Controller
             $CreateProduct = new CreateProductCommand($request->sku,$request->name, $request->price,$request->stock,$request->categoryId, $createdAt);
             $this->commandBus->handle($CreateProduct);
             
-            return $response->success($CreateProduct->ReturnVal());
+            return $response->success("Sukses");
         
         } catch (\Throwable $th) {
 

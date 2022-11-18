@@ -7,13 +7,20 @@ class CreateProductCommand
     private $sku, $name, $price, $stock, $categoryId, $createdAt;
     
     public function __construct($sku, $name, $price, $stock, $categoryId, $createdAt)
-    {
+    {   
         $this->sku = $sku;
         $this->name = $name;
         $this->price = $price;
         $this->stock = $stock;
         $this->categoryId = $categoryId;
         $this->createdAt = $createdAt;
+        
+        
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
     }
 
     public function getSku(): string
@@ -46,18 +53,6 @@ class CreateProductCommand
         return $this->createdAt;
     }
 
-    public function ReturnVal()
-    {
-       return array('data' => 
-                            array(
-                            'sku'=> $this->getSku(), 
-                            'name'=> $this->getName(),
-                            'price'=> $this->getPrice(),
-                            'stock'=> $this->getStock(),
-                            'categoryId'=> $this->getCategoryId(),
-                            'createdAt'=> $this->getcreatedAt() 
-                            )
-                        );
-            
-    }
+    
+
 }
