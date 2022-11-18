@@ -1,0 +1,213 @@
+{
+	"info": {
+		"_postman_id": "9e9a2e75-386c-4b90-92a4-d3ddec372f2f",
+		"name": "TMC-CASE-STUDY-API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1470171"
+	},
+	"item": [
+		{
+			"name": "Category.Store",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "bTGF5FuOLNC2GBANBGBdtzGOryHyYdiirAVuC3Xj1FMoBf3DSBdMHg0IIDsh95RF",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "q0rwGYQtS1QbfQYTgfQa2nQ7GmBJoXpElw22Fb7MxYoETBIcD8ITZDgOFIyHIOX4",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"CHAND00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8072/api/categories",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8072",
+					"path": [
+						"api",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Category.Find",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "bTGF5FuOLNC2GBANBGBdtzGOryHyYdiirAVuC3Xj1FMoBf3DSBdMHg0IIDsh95RF",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8072/api/categories/find/?name=chand",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8072",
+					"path": [
+						"api",
+						"categories",
+						"find",
+						""
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "chand"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Product.Store",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "GeSAXqfDomWFnDrSVedo0JgrKPPX9IRa0tbkvEuNtBkTO76IHLph7f9AGUUpcC9a",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"sku\": \"OT-000-99-99999\",\r\n    \"name\": \"PRODUCT NAME 009099999919\",\r\n    \"price\": 1000000,\r\n    \"stock\": 100,\r\n    \"categoryId\": \"252b7f7c-4148-4f89-93f5-487cc2d81987\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8072/api/product",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8072",
+					"path": [
+						"api",
+						"product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "bTGF5FuOLNC2GBANBGBdtzGOryHyYdiirAVuC3Xj1FMoBf3DSBdMHg0IIDsh95RF",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "q0rwGYQtS1QbfQYTgfQa2nQ7GmBJoXpElw22Fb7MxYoETBIcD8ITZDgOFIyHIOX4",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8072/api/search?price.start=100&price.end=1000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8072",
+					"path": [
+						"api",
+						"search"
+					],
+					"query": [
+						{
+							"key": "sku",
+							"value": "IF-740-03-97136",
+							"disabled": true
+						},
+						{
+							"key": "sku",
+							"value": "PE-299-39-40244",
+							"disabled": true
+						},
+						{
+							"key": "sku",
+							"value": "UW-563-12-86047",
+							"disabled": true
+						},
+						{
+							"key": "price.start",
+							"value": "100"
+						},
+						{
+							"key": "price.end",
+							"value": "1000"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
